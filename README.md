@@ -3,8 +3,17 @@ Hadoop-Triangles
 
 Counting triangles in a graph using Hadoop
 
+This project contains two versions of a graph triangle counting program
+
+The main version is a standard java implementation of map and reduce for
+counting triangles in a graph
+
+The secondary version is a python script implementation of a mapper and a reducer
+for use with the Streaming Hadooop jar
 
 
+
+Reference commands:
 
 Command hdfs:
 
