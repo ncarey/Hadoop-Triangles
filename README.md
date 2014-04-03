@@ -15,6 +15,13 @@ for use with the Streaming Hadooop jar
 
 Reference commands:
 
+Compile+Run TriangleCount command chain:
+javac -classpath ~/hadoop/hadoop-1.2.1/hadoop-core-1.2.1.jar -d trianglecount_classes TriangleCount.java
+
+jar -cvf TriangleCount.jar -C trianglecount_classes/
+
+/home/ncarey/hadoop/hadoop-1.2.1/bin/hadoop jar /home/ncarey/gitrepos/Hadoop-Triangles/source/java/TriangleCount.jar TriangleCount /usr/ncarey/input /usr/ncarey/output
+
 Command hdfs:
 
 bin/hadoop fs -put <path to file to put> <path in dfs to put file in>

@@ -14,39 +14,53 @@ public class TriangleCount {
 		private final static IntWritable one = new IntWritable(1);
 		private Text word = new Text();
 
-		public void map(LongWritable key, Text value, OutputCollector<Text, IntWritable> output, Reporter reporter) throws IOException {
+		public void map(LongWritable key, Text value, OutputCollector<Text, IntWritable> output, Reporter reporter) throws IOException 
+		{
 
 			String line = value.toString();
-
-			StringTokenizer tokenizer = new StringTokenizer(line);
-			while (tokenizer.hasMoreTokens()) {
-				word.set(tokenizer.nextToken());
-				output.collect(word, one);
+			String [] split = line.split("\\s+");
+                        for(int i = 0; i < split.length; i++){
+				for(int j = 0; j < split.length; j++){
+					for(int h = 0; h < split.length; h++){
+						if((i != j && j != h) && i != h) {
+							word.set(split[i] + " " + split[j] + " " + split[h]);
+							output.collect(word,one);
+						}
+					}
+				}
 			}
 		}
 	}
 	
 
-	public static class Reduce extends MapReduceBase implements Reducer<Text, IntWritable, Text, IntWritable> {
-		public void reduce(Text key, Iterator<IntWritable> values, OutputCollector<Text, IntWritable> output, Reporter reporter) throws IOException {
+	public static class Reduce extends MapReduceBase implements Reducer<Text, IntWritable, Text, NullWritable> {
+		private final static NullWritable nw = NullWritable.get();
+		
+		public void reduce(Text key, Iterator<IntWritable> values, OutputCollector<Text, NullWritable> output, Reporter reporter) throws IOException {
+
+
 			int sum = 0;
 			while (values.hasNext()) {
 				sum += values.next().get();
 			}
-			output.collect(key, new IntWritable(sum));
+			if(sum > 1){
+				output.collect(key, nw);
+			}
 		}
 	}
 	
 
 	public static void main(String[] args) throws Exception {
-		JobConf conf = new JobConf(WordCount.class);
-		conf.setJobName("wordcount");
+		JobConf conf = new JobConf(TriangleCount.class);
+		conf.setJobName("trianglecount");
 	
 		conf.setOutputKeyClass(Text.class);
-		conf.setOutputValueClass(IntWritable.class);
+		conf.setOutputValueClass(NullWritable.class);
+
+		conf.setMapOutputKeyClass(Text.class);
+		conf.setMapOutputValueClass(IntWritable.class);
 	
 		conf.setMapperClass(Map.class);
-		conf.setCombinerClass(Reduce.class);
 		conf.setReducerClass(Reduce.class);
 	
 		conf.setInputFormat(TextInputFormat.class);
