@@ -23,7 +23,7 @@ public class TriangleCount {
 				for(int j = 0; j < split.length; j++){
 					for(int h = 0; h < split.length; h++){
 						if((i != j && j != h) && i != h) {
-							word.set(split[i] + " " + split[j] + " " + split[h]);
+							word.set("<" + split[i] + "," + split[j] + "," + split[h] + ">");
 							output.collect(word,one);
 						}
 					}
