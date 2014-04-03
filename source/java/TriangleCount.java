@@ -19,12 +19,15 @@ public class TriangleCount {
 
 			String line = value.toString();
 			String [] split = line.split("\\s+");
-                        for(int i = 0; i < split.length; i++){
-				for(int j = 0; j < split.length; j++){
-					for(int h = 0; h < split.length; h++){
-						if((i != j && j != h) && i != h) {
-							word.set("<" + split[i] + "," + split[j] + "," + split[h] + ">");
-							output.collect(word,one);
+			if(split.length > 0){
+				String host = split[0];
+                        	for(int i = 0; i < split.length; i++){
+					for(int j = 0; j < split.length; j++){
+						for(int h = 0; h < split.length; h++){
+							if(((i != j && j != h) && i != h) && ((split[i] == host || split[j] == host) || split[h] == host)) {
+								word.set("<" + split[i] + "," + split[j] + "," + split[h] + ">");
+								output.collect(word,one);
+							}
 						}
 					}
 				}
